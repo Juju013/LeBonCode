@@ -6,6 +6,7 @@ use App\Entity\Advert;
 use App\Form\AdvertType;
 use App\Repository\AdvertRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,6 +48,7 @@ class AdvertController extends AbstractController
     }
 
     /**
+     * @Entity("Advert", expr="repository.find(id)")
      * @Route("/{id}", name="app_advert_show", methods={ "GET" })
      */
     public function show(Advert $advert): Response
@@ -57,11 +59,12 @@ class AdvertController extends AbstractController
     }
 
     /**
+     * @Entity("Advert", expr="repository.find(id)")
      * @Route("/{id}/edit", name="app_advert_edit", methods={ "GET", "POST" })
      */
     public function edit(Request $request, Advert $advert, AdvertRepository $advertRepository): Response
     {
-        $form = $this->createForm(AdvertType::class, $advert);
+        $form = $this->createForm(AdvertType::class, $advert, [ 'is_edit' => true ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -77,13 +80,18 @@ class AdvertController extends AbstractController
     }
 
     /**
+     * @Entity("Advert", expr="repository.find(id)")
      * @Route("/{id}", name="app_advert_delete", methods={ "POST" })
      */
     public function delete(Request $request, Advert $advert, AdvertRepository $advertRepository): Response
     {
+        /*
         if ($this->isCsrfTokenValid('delete'.$advert->getId(), $request->request->get('_token'))) {
             $advertRepository->remove($advert, true);
         }
+        */
+        $advert->setIsEnabled(false);
+        $advertRepository->save($advert, true);
 
         return $this->redirectToRoute('app_advert_index', [], Response::HTTP_SEE_OTHER);
     }

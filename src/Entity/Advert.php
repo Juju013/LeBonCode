@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AdvertRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -41,6 +42,7 @@ class Advert
     /**
      * @var float
      *
+     * @Assert\PositiveOrZero
      * @ORM\Column(name="price", type="float", nullable=false)
      */
     private $price;
@@ -64,7 +66,7 @@ class Advert
      *
      * @ORM\Column(name="isEnabled", type="boolean", nullable=false)
      */
-    private $isEnabled = false;
+    private $isEnabled = true;
 
     public function getId(): ?int
     {
