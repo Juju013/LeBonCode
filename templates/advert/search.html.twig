@@ -5,34 +5,6 @@
 {% block body %}
     <h1>Advert index</h1>
 
-    <form method="get" action="{{ path('app_advert_search') }}">
-        <input
-                type="search"
-                name="title"
-                class="form-control"
-                placeholder="Title"
-                aria-label="Title"
-        >
-        <input
-                type="number"
-                name="price-min"
-                class="form-control"
-                placeholder="Price Min"
-                aria-label="Price Min"
-        >
-        <input
-                type="number"
-                name="price-max"
-                class="form-control"
-                placeholder="Price Max"
-                aria-label="Price Max"
-        >
-        <button
-            type="submit"
-            aria-label="Search">
-            Search
-        </button>
-    </form>
     <table class="table">
         <thead>
             <tr>
