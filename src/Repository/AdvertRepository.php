@@ -21,6 +21,42 @@ class AdvertRepository extends ServiceEntityRepository
         parent::__construct($registry, Advert::class);
     }
 
+    /**
+     * @return Advert[] Returns an array of Advert objects
+     */
+    public function findBySearch($title = null, $priceMin = null, $priceMax = null): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        if ($title) {
+            dump("in");
+            $qb = $qb->andWhere("a.title LIKE :title")
+                ->setParameter('title', "%" . $title . "%");
+        }
+        if ($priceMin) {
+            $qb = $qb->andWhere('a.price <= :min')
+                ->setParameter('min', $priceMin);
+        }
+        if ($priceMax) {
+            $qb = $qb->andWhere('a.price >= :max')
+                ->setParameter('max', $priceMax);
+        }
+
+        return $qb->getQuery()
+            ->getResult()
+        ;
+    }
+
+//    public function findOneBySomeField($value): ?Advert
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
+
     public function save(Advert $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -38,29 +74,4 @@ class AdvertRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-//    /**
-//     * @return Advert[] Returns an array of Advert objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Advert
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

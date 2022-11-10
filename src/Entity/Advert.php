@@ -43,7 +43,7 @@ class Advert
      * @var float
      *
      * @Assert\PositiveOrZero
-     * @ORM\Column(name="price", type="float", nullable=false)
+     * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $price;
 
